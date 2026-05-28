@@ -31,6 +31,7 @@
     // ─── TODO: Set your resume PDF path ───────────────────────────────────
     // Put your resume PDF in the same folder as index.html and update the filename
     const RESUME_FILENAME = "Arnav_Resume.pdf";
+    const SHEET_URL = "https://script.google.com/macros/s/AKfycbyKr1UcnbP49zs9ETiX7e10IE0YRyWg6-6shUFc4xFD8irEFP3R-gccjOXmgRNlXXle/exec";
 
     // ─── Firebase init ────────────────────────────────────────────────────
     const app    = initializeApp(firebaseConfig);
@@ -64,18 +65,36 @@
     };
 
     // ─── Resume download (gated) ──────────────────────────────────────────
-    window.handleDownload = () => {
-      if (!currentUser) {
-        openAuthModal();
-        return;
-      }
-      // User is signed in — trigger download
-      const link = document.createElement("a");
-      link.href     = RESUME_FILENAME;
-      link.download = RESUME_FILENAME;
-      link.click();
-      showToast(`Downloading resume... Thanks for signing in, ${currentUser.displayName?.split(" ")[0]}!`);
-    };
+    window.handleDownload = async () => {
+  if (!currentUser) {
+    openAuthModal();
+    return;
+  }
+
+  // Log to Google Sheet
+  try {
+    fetch(SHEET_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+        name:      currentUser.displayName ?? "Unknown",
+        email:     currentUser.email ?? "Unknown",
+        photo:     currentUser.photoURL ?? ""
+      })
+    });
+  } catch (e) {
+    console.log("Sheet logging failed:", e);
+  }
+
+  // Trigger download
+  const link = document.createElement("a");
+  link.href     = RESUME_FILENAME;
+  link.download = RESUME_FILENAME;
+  link.click();
+  showToast(`Downloading resume... Thanks, ${currentUser.displayName?.split(" ")[0]}!`);
+};
 
     // ─── Chat ─────────────────────────────────────────────────────────────
     window.sendMessage = async () => {
