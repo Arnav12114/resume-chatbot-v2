@@ -281,6 +281,9 @@
     });
   </script>
 
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
   <style>
     /* ─── Reset & base ─────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -587,6 +590,9 @@
         <span id="user-name"></span>
         <img id="user-avatar" src="" alt="avatar" class="hidden" />
       </div>
+
+      <!-- Calendly popup button -->
+      <button class="btn-outline" onclick="Calendly.initPopupWidget({url:'https://calendly.com/arnavmvn/30min'});return false;" style="font-size:0.82rem;font-weight:600;padding:0.4rem 0.9rem;border-radius:8px;cursor:pointer;background:transparent;color:#f1f5f9;border:1px solid #334155;">📅 Schedule a Call</button>
 
       <!-- Download resume button -->
       <button class="btn-download" onclick="handleDownload()">⬇ Resume</button>
