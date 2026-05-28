@@ -141,6 +141,21 @@
 
         messages.push({ role: "assistant", content: reply });
 
+        // Log chat to Google Sheet
+
+        fetch(SHEET_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type:      "chat",
+            timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+            question:  userQuery,
+            answer:    reply
+          })
+        });  
+
+
       } catch (err) {
         removeThinkingBubble(thinkingId);
         addErrorBubble("Couldn't reach the server. Is the backend running?");
@@ -660,7 +675,7 @@
       💬
     </a>
   </div>
-  
+
   <!-- ─── Auth modal (shown when download clicked without auth) ─────────── -->
   <div id="auth-modal" class="hidden">
     <div class="modal-card">
