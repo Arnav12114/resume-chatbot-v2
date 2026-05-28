@@ -152,7 +152,8 @@ app = FastAPI(title="Resume Chatbot API")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://YOUR_GITHUB_USERNAME.github.io",
+        "https://arnav12114.github.io",
+        #"https://YOUR_GITHUB_USERNAME.github.io",
         "http://localhost:3000",
         "http://127.0.0.1:5500",   # Live Server (VS Code)
         "http://localhost:5500",
